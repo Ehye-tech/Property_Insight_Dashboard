@@ -46,24 +46,6 @@ This repository contains Python scripts for ingesting house data from Kaggle fro
 * **Performance Optimization:** Explore Elasticsearch's performance tuning options to optimize query response times and resource usage.
 * **Advanced Analytics:** Utilize Elasticsearch's advanced analytics capabilities, such as aggregations and machine learning, to gain deeper insights into the data.
 
-
-**Features:**
-
-* **CSV Data Reading:** Reads house data from a CSV file using pandas.
-* **Data Preprocessing:** Performs basic data exploration (optional).
-* **Elasticsearch Index Creation:** Creates an Elasticsearch index with inferred mappings based on the data schema.
-* **Data Ingestion:** Ingests data from the CSV file into the Elasticsearch index using bulk operations for efficiency.
-
-
-**Files:**
-
-* `.gitignore`: Specifies files to be ignored by Git version control.
-* `README.md`: This file (you're reading it!).
-* `elasticSearch.py`: Contains functions for connecting to Elasticsearch, creating an index, and ingesting data.
-* `index.py`: The main script that reads data, connects to Elasticsearch, and performs data ingestion.
-* `train.csv`: (Example) The CSV file containing house data.
-
-
 **How to Use:**
 
 1. **Prerequisites:**
