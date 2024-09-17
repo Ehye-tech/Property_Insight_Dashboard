@@ -1,4 +1,4 @@
-# Property_Insight_Dashboard
+# Property_Insight_Search
 
 ## ElastiSearch House Data Ingestion
 
