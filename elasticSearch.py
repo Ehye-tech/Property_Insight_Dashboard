@@ -1,63 +1,57 @@
-# import pandas as pd
-# import numpy as np
+from elasticsearch_dsl import Index, Text, Keyword, Integer, Float, Date, Boolean, GeoPoint
+import json
+import pandas as pd
+import numpy as np
+from elasticsearch import Elasticsearch
+from elasticsearch.helpers import bulk
+from dotenv import load_dotenv
+import os
 
-# def clean_data(df):
-#   """Cleans the DataFrame by handling missing values, outliers, and inconsistencies.
+load_dotenv()
+elastic_path = os.getenv("ELASTIC_SEARCH_PATH")  
+elastic_secret_key = os.getenv("ELASTIC_SEARCH_API_KEY")
 
-#   Args:
-#     df: Pandas DataFrame containing the data.
+def insertData(data):
+  es = Elasticsearch(
+      'https://localhost:9200',
+      basic_auth=("elastic", elastic_secret_key),
+      ca_certs='/Users/kang-eunhye/elasticsearch-8.15.0/certs.pem' 
+      )
+  print(es.ping())
 
-#   Returns:
-#     pandas.DataFrame: Cleaned DataFrame.
-#   """
+  # Define the index name explicitly 
+  index_name = "product_list"
 
-#   # Handle missing values (replace with appropriate values, drop rows/columns)
-#   df.fillna(method='ffill', inplace=True)  # Replace missing values with forward fill (adjust as needed)
+  # schema in mapping.json 
+  # with open('mapping.json', 'r') as f:
+  #   mapping = json.load(f)
+  #   es.indices.create(index=index_name, body=mapping)
 
-#   # Handle outliers (e.g., using z-scores or IQR)
-#   # ...
+  # Load data from a CSV or JSON file (example)
+  # df = pd.read_csv("your_product_data.csv")
+  # data = df.to_dict(orient="records")  # Assuming data is in a pandas DataFrame
 
-#   # Convert data types (if necessary)
-#   # ...
+  # Bulk insertion (replace with your actual data structure)
+  bulk_actions = []
+  for product in data:
+    doc = {
+      "neighborhood": product.get("neighborhood", None),  # Handle missing values
+      "salePrice": product.get("salePrice", None),
+      "lotArea": product.get("lotArea", None),
+      "status": product.get("status", None),
+    }
+    action = {
+        "_index": index_name,
+        "_source": doc
+    }
+    bulk_actions.append(action)
 
-#   # Feature engineering (if needed)
-#   # ...
+  bulk(es, bulk_actions)
+  print("Data ingestion completed!")
 
-#   return df
+# Example usage
+data = [
+  {"neighborhood": "Sawyer2", "salePrice": 11400, "lotArea": 2000, "status": 1},
+]
 
-# from elasticsearch import Elasticsearch
-# from elasticsearch_dsl import Index, Text, Date, Keyword, Integer, Float
-
-# def create_elasticsearch_index(es_client, index_name, mappings):
-#   """Creates an Elasticsearch index with specified mappings.
-
-#   Args:
-#     es_client: Elasticsearch client instance.
-#     index_name: Name of the index to create.
-#     mappings: Index mappings.
-#   """
-
-#   index = Index(index_name)
-#   index.doc_type = 'house_data'  # Set document type (optional)
-
-#   # Define mappings for fields (adjust based on your data)
-#   index.mapping = {
-#       'properties': {
-#           'MSSubClass': Integer(),
-#           'MSZoning': Keyword(),
-#           # ... other fields and their corresponding data types
-#       }
-#   }
-
-#   index.create(index=index_name, body=index.to_dict())
-
-# def create_elasticsearch_client():
-#   """Connects to Elasticsearch and returns a client instance.
-
-#   Returns:
-#     elasticsearch.Elasticsearch: Elasticsearch client.
-#   """
-
-#   # Replace with your Elasticsearch connection details
-#   es_client = Elasticsearch(hosts=['localhost:9200'])
-#   return es_client
+insertData(data)

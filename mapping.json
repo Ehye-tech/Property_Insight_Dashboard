@@ -1,0 +1,30 @@
+{
+    "mappings" : {
+      "properties" : {
+        "neighborhood" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "lotArea" : {
+          "type" : "int"
+        },
+        "salePrice": {
+            "type" : "int"
+        },
+        "status" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        }
+      }
+    }
+  }
