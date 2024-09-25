@@ -1,0 +1,18 @@
+# Elasticsearch connection details
+elasticsearch:
+  url: "http://localhost:9200"
+
+# Index configuration
+index:
+  name: "house_data"
+
+# Data source (modify the path accordingly)
+data_source:
+  csv_file: "train.csv"
+
+# Steps to be executed (uncomment desired steps)
+# - Create index if it doesn't exist
+#   create_index: true
+
+# - Bulk ingest data to Elasticsearch
+ingest_data: true
